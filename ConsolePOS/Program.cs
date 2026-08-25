@@ -59,6 +59,7 @@ namespace Console_POS
                     case 1:
                         AddItemToCart();
                         break;
+
                     case 2:
                         RemoveItemFromCart();
                         break;
@@ -78,7 +79,7 @@ namespace Console_POS
             Console.WriteLine("-------------------------------");
             for (int i = 0; i < items.Length; i++)
                 Console.WriteLine($" [{i + 1}] {items[i],-15} P{prices[i]}");
-                    Console.WriteLine("-------------------------------");
+            Console.WriteLine("-------------------------------");
         }
 
         static void AddItemToCart()
@@ -109,26 +110,6 @@ namespace Console_POS
             Console.ReadKey();
         }
 
-        static void RemoveItemFromCart()
-        {
-            Console.Clear();
-            ViewCart();
-            Console.Write("Enter item number to remove: ");
-            if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > items.Length)
-            {
-                Console.WriteLine("Invalid choice. Press any key...");
-                Console.ReadKey();
-                return;
-            }
-
-            int index = choice - 1;
-            cartItems[index] = null;
-            cartQuantities[index] = 0;
-
-            Console.WriteLine("Item removed. Press any key...");
-            Console.ReadKey();
-        }
-
         static void ViewCart()
         {
             Console.Clear();
@@ -152,6 +133,35 @@ namespace Console_POS
             Console.WriteLine($" Total: P{total}");
             Console.WriteLine("Press any key...");
             Console.ReadKey();
+        }
+
+        static void RemoveItemFromCart()
+        {
+            Console.Clear();
+            Console.WriteLine("-------------------------------");
+            Console.WriteLine("         REMOVE ITEM");
+            Console.WriteLine("-------------------------------");
+
+            for (int i = 0; i < cartItems.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(cartItems[i]))
+                    Console.WriteLine($" [{i + 1}] {cartItems[i],-15} x{cartQuantities[i],-5}");
+            }
+
+            Console.WriteLine("-------------------------------");
+
+            Console.Write("Choose item to remove: ");
+            int choice;
+
+            if (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > cartItems.Length || string.IsNullOrEmpty(cartItems[choice - 1]))
+            {
+                Console.WriteLine("Invalid choice. Please try again.");
+                return;
+            }
+
+            cartItems[choice - 1] = null;
+            cartQuantities[choice - 1] = 0;
+            Console.WriteLine("Item removed from the cart.");
         }
     }
 }
